@@ -21,6 +21,10 @@ class MockGlue extends glue.Glue {
         assert.fail("`addEthereumChain` called unexpectedly");
     }
 
+    signMessage(_action: glue.SignMessage): Promise<void> {
+        assert.fail("`signMessage` called unexpectedly");
+    }
+
     public emit<E extends keyof glue.EventMap>(
         type: E,
         ...ev: Parameters<glue.EventMap[E]>
@@ -136,6 +140,26 @@ describe("serveGlue()", function () {
         );
     });
 
+    it("calls signMessage", async function () {
+        let evt: null | glue.SignMessage = null;
+
+        // eslint-disable-next-line @typescript-eslint/require-await
+        mockGlue.signMessage = async (action) => void (evt = action);
+
+        const param: glue.SignMessage = {
+            id: "3",
+            action: "approve",
+        };
+
+        await client.call("signMessage", [param]);
+
+        assert.deepEqual(
+            evt,
+            param,
+            "signMessage was called with correct parameters"
+        );
+    });
+
     it("receives requestaccounts events", async function () {
         await client.subscribe("requestaccounts");
 
@@ -217,6 +241,26 @@ describe("serveGlue()", function () {
             id: "3",
             type: "switchethereumchain",
             chainId: "1",
+        });
+    });
+
+    it("receives signmessage events", async function () {
+        await client.subscribe("signmessage");
+
+        const promise = new Promise((res) => client.once("signmessage", res));
+
+        const event = new glue.SignMessageEvent("3", {
+            message: "message",
+        });
+
+        mockGlue.emit("signmessage", event);
+
+        const actual = await promise;
+
+        assert.deepEqual(actual, {
+            id: "3",
+            type: "signmessage",
+            message: "message",
         });
     });
 });

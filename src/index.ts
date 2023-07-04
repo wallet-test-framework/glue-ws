@@ -11,6 +11,7 @@ const ACTIONS: (keyof Actions)[] = (() => {
         activateChain: null,
         switchEthereumChain: null,
         requestAccounts: null,
+        signMessage: null,
     } as const;
 
     const actions: (keyof Actions)[] = [];
@@ -28,6 +29,7 @@ const EVENTS: (keyof Events)[] = (() => {
         requestaccounts: null,
         addethereumchain: null,
         switchethereumchain: null,
+        signmessage: null,
     } as const;
 
     const events: (keyof Events)[] = [];
