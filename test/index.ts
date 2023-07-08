@@ -25,6 +25,10 @@ class MockGlue extends glue.Glue {
         assert.fail("`signMessage` called unexpectedly");
     }
 
+    sendTransaction(_action: glue.SendTransaction): Promise<void> {
+        assert.fail("`sendTransaction` called unexpectedly");
+    }
+
     public emit<E extends keyof glue.EventMap>(
         type: E,
         ...ev: Parameters<glue.EventMap[E]>
@@ -160,6 +164,26 @@ describe("serveGlue()", function () {
         );
     });
 
+    it("calls sendTransaction", async function () {
+        let evt: null | glue.SendTransaction = null;
+
+        // eslint-disable-next-line @typescript-eslint/require-await
+        mockGlue.sendTransaction = async (action) => void (evt = action);
+
+        const param: glue.SendTransaction = {
+            id: "3",
+            action: "approve",
+        };
+
+        await client.call("sendTransaction", [param]);
+
+        assert.deepEqual(
+            evt,
+            param,
+            "sendTransaction was called with correct parameters"
+        );
+    });
+
     it("receives requestaccounts events", async function () {
         await client.subscribe("requestaccounts");
 
@@ -261,6 +285,34 @@ describe("serveGlue()", function () {
             id: "3",
             type: "signmessage",
             message: "message",
+        });
+    });
+
+    it("receives sendtransaction events", async function () {
+        await client.subscribe("sendtransaction");
+
+        const promise = new Promise((res) =>
+            client.once("sendtransaction", res)
+        );
+
+        const event = new glue.SendTransactionEvent("3", {
+            to: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            from: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            value: "0x01",
+            data: "0x",
+        });
+
+        mockGlue.emit("sendtransaction", event);
+
+        const actual = await promise;
+
+        assert.deepEqual(actual, {
+            id: "3",
+            type: "sendtransaction",
+            to: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            from: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            value: "0x01",
+            data: "0x",
         });
     });
 });
