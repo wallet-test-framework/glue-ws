@@ -29,6 +29,10 @@ class MockGlue extends glue.Glue {
         assert.fail("`sendTransaction` called unexpectedly");
     }
 
+    signTransaction(_action: glue.SignTransaction): Promise<void> {
+        assert.fail("`signTransaction` called unexpectedly");
+    }
+
     public emit<E extends keyof glue.EventMap>(
         type: E,
         ...ev: Parameters<glue.EventMap[E]>
@@ -184,6 +188,26 @@ describe("serveGlue()", function () {
         );
     });
 
+    it("calls signTransaction", async function () {
+        let evt: null | glue.SignTransaction = null;
+
+        // eslint-disable-next-line @typescript-eslint/require-await
+        mockGlue.signTransaction = async (action) => void (evt = action);
+
+        const param: glue.SignTransaction = {
+            id: "3",
+            action: "approve",
+        };
+
+        await client.call("signTransaction", [param]);
+
+        assert.deepEqual(
+            evt,
+            param,
+            "signTransaction was called with correct parameters"
+        );
+    });
+
     it("receives requestaccounts events", async function () {
         await client.subscribe("requestaccounts");
 
@@ -309,6 +333,34 @@ describe("serveGlue()", function () {
         assert.deepEqual(actual, {
             id: "3",
             type: "sendtransaction",
+            to: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            from: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            value: "0x01",
+            data: "0x",
+        });
+    });
+
+    it("receives signtransaction events", async function () {
+        await client.subscribe("signtransaction");
+
+        const promise = new Promise((res) =>
+            client.once("signtransaction", res)
+        );
+
+        const event = new glue.SignTransactionEvent("3", {
+            to: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            from: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            value: "0x01",
+            data: "0x",
+        });
+
+        mockGlue.emit("signtransaction", event);
+
+        const actual = await promise;
+
+        assert.deepEqual(actual, {
+            id: "3",
+            type: "signtransaction",
             to: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             from: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
             value: "0x01",
