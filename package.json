@@ -5,9 +5,11 @@
     "license": "MIT",
     "type": "module",
     "exports": {
-        ".": "./dist/index.js"
+        ".": {
+            "types": "./dist/src/index.d.ts",
+            "default": "./dist/index.js"
+        }
     },
-    "types": "./dist/src/index.d.ts",
     "files": [
         "dist",
         "!dist/test"
@@ -38,24 +40,24 @@
     },
     "homepage": "https://wtf.allwallet.dev/",
     "devDependencies": {
-        "@jgoz/esbuild-plugin-typecheck": "^3.0.2",
-        "@trivago/prettier-plugin-sort-imports": "^4.1.1",
-        "@tsconfig/recommended": "^1.0.2",
-        "@types/mocha": "^10.0.1",
+        "@jgoz/esbuild-plugin-typecheck": "^3.1.0",
+        "@trivago/prettier-plugin-sort-imports": "^4.2.1",
+        "@tsconfig/recommended": "^1.0.3",
+        "@types/mocha": "^10.0.3",
         "@types/node": "^20.3.1",
-        "@types/ws": "^8.5.5",
-        "@typescript-eslint/eslint-plugin": "5.57.1",
-        "@typescript-eslint/parser": "^5.57.1",
-        "esbuild": "0.17.15",
-        "eslint": "8.37.0",
-        "eslint-config-prettier": "^8.8.0",
+        "@types/ws": "^8.5.8",
+        "@typescript-eslint/eslint-plugin": "6.9.0",
+        "@typescript-eslint/parser": "^6.9.0",
+        "esbuild": "0.19.5",
+        "eslint": "8.52.0",
+        "eslint-config-prettier": "^9.0.0",
         "mocha": "^10.2.0",
-        "prettier": "2.8.7",
-        "tsx": "^3.12.7",
-        "typescript": "^5.0.4"
+        "prettier": "3.0.3",
+        "tsx": "^3.14.0",
+        "typescript": "^5.2.2"
     },
     "dependencies": {
-        "@wallet-test-framework/glue": "^0.6.0",
-        "rpc-websockets": "^7.5.1"
+        "@wallet-test-framework/glue": "^0.7.0",
+        "rpc-websockets": "^7.6.1"
     }
 }

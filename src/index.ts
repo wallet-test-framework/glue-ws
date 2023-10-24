@@ -57,7 +57,7 @@ export interface ServeResult {
 
 export default function serveGlue(
     glue: Glue,
-    options: ServeOptions
+    options: ServeOptions,
 ): ServeResult {
     const wss = new WebSocketServer({ port: options.port });
 

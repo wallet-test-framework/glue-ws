@@ -1,4 +1,4 @@
-import serveGlue, { ServeResult } from "../src/index";
+import serveGlue, { ServeResult } from "../src/index.js";
 import * as glue from "@wallet-test-framework/glue";
 import { describe, it } from "mocha";
 import * as assert from "node:assert/strict";
@@ -83,7 +83,7 @@ describe("serveGlue()", function () {
         assert.deepEqual(
             activated,
             param,
-            "activateChain was called with correct parameters"
+            "activateChain was called with correct parameters",
         );
     });
 
@@ -104,7 +104,7 @@ describe("serveGlue()", function () {
         assert.deepEqual(
             requested,
             param,
-            "requestAccounts was called with correct parameters"
+            "requestAccounts was called with correct parameters",
         );
     });
 
@@ -124,7 +124,7 @@ describe("serveGlue()", function () {
         assert.deepEqual(
             chain,
             param,
-            "switchEthereumChain was called with correct parameters"
+            "switchEthereumChain was called with correct parameters",
         );
     });
 
@@ -144,7 +144,7 @@ describe("serveGlue()", function () {
         assert.deepEqual(
             chain,
             param,
-            "addEthereumChain was called with correct parameters"
+            "addEthereumChain was called with correct parameters",
         );
     });
 
@@ -164,7 +164,7 @@ describe("serveGlue()", function () {
         assert.deepEqual(
             evt,
             param,
-            "signMessage was called with correct parameters"
+            "signMessage was called with correct parameters",
         );
     });
 
@@ -184,7 +184,7 @@ describe("serveGlue()", function () {
         assert.deepEqual(
             evt,
             param,
-            "sendTransaction was called with correct parameters"
+            "sendTransaction was called with correct parameters",
         );
     });
 
@@ -204,7 +204,7 @@ describe("serveGlue()", function () {
         assert.deepEqual(
             evt,
             param,
-            "signTransaction was called with correct parameters"
+            "signTransaction was called with correct parameters",
         );
     });
 
@@ -212,7 +212,7 @@ describe("serveGlue()", function () {
         await client.subscribe("requestaccounts");
 
         const promise = new Promise((res) =>
-            client.once("requestaccounts", res)
+            client.once("requestaccounts", res),
         );
 
         const event = new glue.RequestAccountsEvent("3", {
@@ -234,7 +234,7 @@ describe("serveGlue()", function () {
         await client.subscribe("addethereumchain");
 
         const promise = new Promise((res) =>
-            client.once("addethereumchain", res)
+            client.once("addethereumchain", res),
         );
 
         const event = new glue.AddEthereumChainEvent("3", {
@@ -274,7 +274,7 @@ describe("serveGlue()", function () {
         await client.subscribe("switchethereumchain");
 
         const promise = new Promise((res) =>
-            client.once("switchethereumchain", res)
+            client.once("switchethereumchain", res),
         );
 
         const event = new glue.SwitchEthereumChainEvent("3", {
@@ -316,7 +316,7 @@ describe("serveGlue()", function () {
         await client.subscribe("sendtransaction");
 
         const promise = new Promise((res) =>
-            client.once("sendtransaction", res)
+            client.once("sendtransaction", res),
         );
 
         const event = new glue.SendTransactionEvent("3", {
@@ -344,7 +344,7 @@ describe("serveGlue()", function () {
         await client.subscribe("signtransaction");
 
         const promise = new Promise((res) =>
-            client.once("signtransaction", res)
+            client.once("signtransaction", res),
         );
 
         const event = new glue.SignTransactionEvent("3", {
