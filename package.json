@@ -1,6 +1,6 @@
 {
     "name": "@wallet-test-framework/glue-ws",
-    "version": "0.1.0",
+    "version": "0.2.0-dev",
     "description": "An adapter for WTF glue implementations over WebSockets",
     "license": "MIT",
     "type": "module",
