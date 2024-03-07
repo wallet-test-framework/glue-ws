@@ -57,7 +57,7 @@
         "typescript": "^5.4.2"
     },
     "dependencies": {
-        "@wallet-test-framework/glue": "^0.7.0",
+        "@wallet-test-framework/glue": "^0.8.0",
         "rpc-websockets": "^7.9.0"
     }
 }

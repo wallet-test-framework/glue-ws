@@ -33,6 +33,10 @@ class MockGlue extends glue.Glue {
         assert.fail("`signTransaction` called unexpectedly");
     }
 
+    report(_action: glue.Report): Promise<void> {
+        assert.fail("`report` called unexpectedly");
+    }
+
     public emit<E extends keyof glue.EventMap>(
         type: E,
         ...ev: Parameters<glue.EventMap[E]>
@@ -205,6 +209,26 @@ describe("serveGlue()", function () {
             evt,
             param,
             "signTransaction was called with correct parameters",
+        );
+    });
+
+    it("calls report", async function () {
+        let evt: null | glue.Report = null;
+
+        // eslint-disable-next-line @typescript-eslint/require-await
+        mockGlue.report = async (action) => void (evt = action);
+
+        const param: glue.Report = {
+            format: "some-format",
+            value: "approve",
+        };
+
+        await client.call("report", [param]);
+
+        assert.deepEqual(
+            evt,
+            param,
+            "report was called with correct parameters",
         );
     });
 
