@@ -14,6 +14,7 @@ const ACTIONS: (keyof Actions)[] = (() => {
         signMessage: null,
         sendTransaction: null,
         signTransaction: null,
+        report: null,
     } as const;
 
     const actions: (keyof Actions)[] = [];
