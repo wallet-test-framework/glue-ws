@@ -49,6 +49,7 @@ const EVENTS: (keyof Events)[] = (() => {
 
 export interface ServeOptions {
     port: number;
+    host?: string;
 }
 
 export interface ServeResult {
@@ -60,7 +61,7 @@ export default function serveGlue(
     glue: Glue,
     options: ServeOptions,
 ): ServeResult {
-    const wss = new WebSocketServer({ port: options.port });
+    const wss = new WebSocketServer({ port: options.port, host: options.host });
 
     for (const key of EVENTS) {
         wss.event(key);
